@@ -13,4 +13,4 @@
 * Media Queries
 
 ### url 
-https://suhoi579.github.io/messto/index.html
+https://suhoi579.github.io/mesto/index.html
