@@ -1,7 +1,7 @@
 // Находим форму в DOM
 // Воспользуйтесь методом querySelector()
 const popup = document.querySelector('.popup');
-const formElement = popup.querySelector('.popup__container');
+const formElement = popup.querySelector('.popup__form');
 
 // Находим поля формы в DOM
 const openPopupButton = document.querySelector('.profile__edit-button');
