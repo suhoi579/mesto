@@ -18,15 +18,15 @@ const nameInput = document.querySelector('.popup__input_profile_name');
 const linkInput = document.querySelector('.popup__input_elements_link');
 const elementInput = document.querySelector('.popup__input_elements_name');
 
-const showPopupTitle = document.querySelector('.popup__show-title');
-const showPopupImage = document.querySelector('.popup__show-image');
+const popupTitleShow = document.querySelector('.popup__show-title');
+const popupImageShow = document.querySelector('.popup__show-image');
 
 
 const profile = document.querySelector('.profile');
 const profileName = profile.querySelector('.profile__name');
 const profileJob = profile.querySelector('.profile__job');
 
-const elementsContainer = document.querySelector('.elements');
+const elementsContainer = document.querySelector('.cards'); /* '.elements' */
 
 // Обработчик «отправки» формы, хотя пока
 // она никуда отправляться не будет
@@ -100,30 +100,30 @@ buttonAddOpen.addEventListener('click', () => {
 
 // Template 
 function addElement(name, link) {
-    const elementTemplate = document.querySelector('.elements-template').content;
+    const elementTemplate = document.querySelector('.elements').content; /* '.elements-template' */
     const elementsElement = elementTemplate.querySelector('.elements__element').cloneNode(true);
 
-    const trashButton = elementsElement.querySelector('.elements__trash');
-    const likeButton = elementsElement.querySelector('.elements__button');
+    const buttonTrash = elementsElement.querySelector('.elements__trash');
+    const buttonLike = elementsElement.querySelector('.elements__button');
     const elementsImage = elementsElement.querySelector('.elements__image');
 
     elementsElement.querySelector('.elements__name').textContent = name;
     elementsImage.src = link;
     elementsImage.alt = name;
     
-    trashButton.addEventListener('click',() => {
+    buttonTrash.addEventListener('click',() => {
         elementsElement.remove();
     });
 
-    likeButton.addEventListener('click', (evt) => {
+    buttonLike.addEventListener('click', (evt) => {
         evt.target.classList.toggle('elements__button_active');
     });
 
     elementsImage.addEventListener('click', () => {
         popupShow.classList.add('popup_opened');
-        showPopupTitle.textContent = name;
-        showPopupImage.src = link;
-        showPopupImage.alt = name;
+        popupTitleShow.textContent = name;
+        popupImageShow.src = link;
+        popupImageShow.alt = name;
     });
 
     return elementsElement;
