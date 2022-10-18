@@ -1,81 +1,89 @@
-// Находим форму в DOM
-// Воспользуйтесь методом querySelector()
 const popups = document.querySelectorAll('.popup');
+
+/* popups */
 const popupProfile = document.querySelector('.popup_profile');
 const popupElements = document.querySelector('.popup_elements');
 const popupShow = document.querySelector('.popup_show');
+
+/* forms */
 const profileForm = popupProfile.querySelector('.popup__form');
 const elementForm = popupElements.querySelector('.popup__form');
 
-// Находим поля формы в DOM
+const forms = document.forms;
+const сardAddForm = forms.elementsForm;
+const profileEditForm = forms.profileForm;
+
+/* buttons */
 const buttonPopupOpen = document.querySelector('.profile__edit-button');
 const buttonAddOpen = document.querySelector('.profile__add-button');
 const buttonPopupClose = document.querySelector('.popup__close-button');
 
+/* input */
 const jobInput = document.querySelector('.popup__input_profile_job');
 const nameInput = document.querySelector('.popup__input_profile_name');
-
 const linkInput = document.querySelector('.popup__input_elements_link');
 const elementInput = document.querySelector('.popup__input_elements_name');
 
+/* show */
 const popupTitleShow = document.querySelector('.popup__show-title');
 const popupImageShow = document.querySelector('.popup__show-image');
 
-
+/* profile */
 const profile = document.querySelector('.profile');
 const profileName = profile.querySelector('.profile__name');
 const profileJob = profile.querySelector('.profile__job');
 
 const elementsContainer = document.querySelector('.cards'); /* '.elements' */
 
-// Обработчик «отправки» формы, хотя пока
-// она никуда отправляться не будет
+// Обработчик «отправки» формы
 function submitFormProfile (evt) {
-    evt.preventDefault(); // Эта строчка отменяет стандартную отправку формы.
-                                                // Так мы можем определить свою логику отправки.
-                                                // О том, как это делать, расскажем позже.
-
-    // Получите значение полей jobInput и nameInput из свойства value
+    evt.preventDefault();
     profileName.textContent = nameInput.value;
     profileJob.textContent = jobInput.value;
     closePopup();
-
-    // Выберите элементы, куда должны быть вставлены значения полей
-
-    // Вставьте новые значения с помощью textContent
 };
-
-// Прикрепляем обработчик к форме:
-// он будет следить за событием “submit” - «отправка»
-
-profileForm.addEventListener('submit', submitFormProfile);
 
 // Функция открытия popup_profile
 function openPopupProfile() {
     popupProfile.classList.add('popup_opened');
+    document.addEventListener('keydown', closePopupEsc);
 };
 
 // Функция открытия popup_elements
 function openPopupElements () {
     popupElements.classList.add('popup_opened');
+    document.addEventListener('keydown', closePopupEsc);
 };
+
+//функция открытия popup__show
+function openPopupShow () {
+    popupShow.classList.add('popup_opened');
+    document.addEventListener('keydown', closePopupEsc);
+}
 
 // Функция закрытия popup
 function closePopup() {
     popups.forEach((popup) => {
         popup.classList.remove('popup_opened');
+        document.removeEventListener('keydown', closePopupEsc);
     });
 };
 
-//Закрываем popup
+// Функция закрытия popup на оферлей
 popups.forEach((popup) => {
     popup.addEventListener('click', (evt) => {
         if(evt.target === evt.currentTarget || evt.target.classList.contains('popup__close-button')) {
             closePopup();
         };
     });
-})
+});
 
+// Функция закрытия popup на Escape
+function closePopupEsc(evt) {
+    if(evt.key === 'Escape') {
+        closePopup();
+    };
+};
 
 //Редактируем поля и сохраняем новые значения
 buttonPopupOpen.addEventListener('click', () => {
@@ -84,18 +92,17 @@ buttonPopupOpen.addEventListener('click', () => {
     jobInput.value = profileJob.textContent;
 });
 
-// submit add element
+// добавление карточки
 function submitFormElement (evt) {
     evt.preventDefault();
     renderCard(elementInput.value, linkInput.value); 
     closePopup();
 };
 
-elementForm.addEventListener('submit', submitFormElement);
-
 // Добавляем картинку и сохраняем
 buttonAddOpen.addEventListener('click', () => {
     openPopupElements();
+    сardAddForm.reset();
 });
 
 // Template 
@@ -120,7 +127,7 @@ function addElement(name, link) {
     });
 
     elementsImage.addEventListener('click', () => {
-        popupShow.classList.add('popup_opened');
+        openPopupShow();
         popupTitleShow.textContent = name;
         popupImageShow.src = link;
         popupImageShow.alt = name;
@@ -140,3 +147,7 @@ function renderCard(name, link) {
 initialCards.forEach((item) => {
     renderCard(item.name, item.link);
 });
+
+profileForm.addEventListener('submit', submitFormProfile);
+
+elementForm.addEventListener('submit', submitFormElement);

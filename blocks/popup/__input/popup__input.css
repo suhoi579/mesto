@@ -7,12 +7,14 @@
     border: none;
     border-bottom: 1px solid rgba(0, 0, 0, 0.2);
     outline: none;
-    position: relative;
-    margin-bottom: 30px;
   }
   
   @media screen and (max-width: 879px) {
     .popup__input {
       width: 238px;
     }
+  }
+
+  .popup__input:invalid {
+    border-bottom: 1px solid red;
   }
