@@ -1,55 +1,64 @@
+const settings = {
+    formSelector: '.popup__form',
+    inputSelector: '.popup__input',
+    submitButtonSelector: '.popup__button',
+    inactiveButtonClass: 'popup__button_inactive',
+    inputErrorClass: 'popup__input_error',
+    errorClass: 'popup__error_active'
+  }; 
+
 // показ ошибки
-const showInputError = (formElement, inputElement, errorMessage) => {
+const showInputError = (formElement, inputElement, errorMessage, settings) => {
     const errorElement= formElement.querySelector(`.${inputElement.id}-error`);
 
-    inputElement.classList.add('popup__input_error');
-    errorElement.classList.add('popup__error_active');
+    inputElement.classList.add(settings.inputErrorClass);
+    errorElement.classList.add(settings.errorClass);
     errorElement.textContent = errorMessage;
 };
 
 // скрытие ошибки 
-const hideInputError = (formElement, inputElement) => {
+const hideInputError = (formElement, inputElement, settings) => {
     const errorElement= formElement.querySelector(`.${inputElement.id}-error`);
 
-    inputElement.classList.remove('popup__input_error');
-    errorElement.classList.remove('popup__error_active');
+    inputElement.classList.remove(settings.inputErrorClass);
+    errorElement.classList.remove(settings.errorClass);
     errorElement.textContent = '';
 };
 
 // проверка на ошибеку 
 const checkInputValidity = (formElement, inputElement) => {
     if (!inputElement.validity.valid) {
-        showInputError(formElement, inputElement, inputElement.validationMessage);
+        showInputError(formElement, inputElement, inputElement.validationMessage, settings);
     } else {
-        hideInputError(formElement, inputElement);
+        hideInputError(formElement, inputElement, settings);
     }
 };
 
 // вешаем слушатель на инпуты и кнопку 
-const setEventListeners = (formElement) => {
-    const inputList = Array.from(formElement.querySelectorAll('.popup__input'));
-    const buttonElement = formElement.querySelector('.popup__button');
+const setEventListeners = (formElement, settings) => {
+    const inputList = Array.from(formElement.querySelectorAll(settings.inputSelector));
+    const buttonElement = formElement.querySelector(settings.submitButtonSelector);
 
-    toggleButtonState(inputList, buttonElement);
+    toggleButtonState(inputList, buttonElement, settings);
 
     inputList.forEach((inputElement) => {
         inputElement.addEventListener('input', function() {
             checkInputValidity(formElement, inputElement);
-            toggleButtonState(inputList, buttonElement);
+            toggleButtonState(inputList, buttonElement, settings);
         });
     });
 };
 
 // валидаторы на форму
-const enableValidation = () => {
-    const formList = Array.from(document.querySelectorAll('.popup__form')); 
+const enableValidation = (settings) => {
+    const formList = Array.from(document.querySelectorAll(settings.formSelector)); 
 
     formList.forEach((formElement) => {
         formElement.addEventListener('submit', (evt) => {
             evt.preventDefault();
         });
 
-        setEventListeners(formElement);
+        setEventListeners(formElement, settings);
     });
 };
 
@@ -61,12 +70,14 @@ const hasInvalidInput = (inputList) => {
 };
 
 // выключаем кнопку 
-const toggleButtonState = (inputList, buttonElement) => {
+const toggleButtonState = (inputList, buttonElement, settings) => {
     if (hasInvalidInput(inputList)) {
-        buttonElement.classList.add('popup__button_inactive');
+        buttonElement.classList.add(settings.inactiveButtonClass);
+        buttonElement.setAttribute('disabled', true);
     } else {
-        buttonElement.classList.remove('popup__button_inactive');
+        buttonElement.classList.remove(settings.inactiveButtonClass);
+        buttonElement.removeAttribute('disabled', true);
     };
 };
 
-enableValidation();
+enableValidation(settings);
