@@ -41,7 +41,6 @@
 @import url(../blocks/popup/__button/popup__button.css);
 @import url(../blocks/popup/__button/_inactive/popup__button_inactive.css);
 @import url(../blocks/popup/__error/popup__error.css);
-@import url(../blocks/popup/__error/_active/popup__error_active.css);
 @import url(../blocks/popup/__field/popup__field.css);
 /* popup show */
 @import url(../blocks/popup/_show/popup_show.css);

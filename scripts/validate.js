@@ -4,7 +4,7 @@ const settings = {
     submitButtonSelector: '.popup__button',
     inactiveButtonClass: 'popup__button_inactive',
     inputErrorClass: 'popup__input_error',
-    errorClass: 'popup__error_active'
+    errorClass: 'popup__error'
   }; 
 
 // показ ошибки
@@ -12,8 +12,8 @@ const showInputError = (formElement, inputElement, errorMessage, settings) => {
     const errorElement= formElement.querySelector(`.${inputElement.id}-error`);
 
     inputElement.classList.add(settings.inputErrorClass);
-    errorElement.classList.add(settings.errorClass);
     errorElement.textContent = errorMessage;
+    errorElement.classList.add(settings.errorClass);
 };
 
 // скрытие ошибки 
@@ -26,7 +26,7 @@ const hideInputError = (formElement, inputElement, settings) => {
 };
 
 // проверка на ошибеку 
-const checkInputValidity = (formElement, inputElement) => {
+const checkInputValidity = (formElement, inputElement, settings) => {
     if (!inputElement.validity.valid) {
         showInputError(formElement, inputElement, inputElement.validationMessage, settings);
     } else {
@@ -43,7 +43,7 @@ const setEventListeners = (formElement, settings) => {
 
     inputList.forEach((inputElement) => {
         inputElement.addEventListener('input', function() {
-            checkInputValidity(formElement, inputElement);
+            checkInputValidity(formElement, inputElement, settings);
             toggleButtonState(inputList, buttonElement, settings);
         });
     });
@@ -79,5 +79,7 @@ const toggleButtonState = (inputList, buttonElement, settings) => {
         buttonElement.removeAttribute('disabled', true);
     };
 };
+
+
 
 enableValidation(settings);
